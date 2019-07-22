@@ -24,12 +24,13 @@ EOF
 
 read -s -n 1 answer
 if [ "$answer" != "Y" -a "$answer" != "y" ]; then
-	exit 0
-fi
 expect -c "
 set timeout 5
 expect \"y\"
 "
+	exit 0
+fi
+
 echo
 
 datasets=(sun3d rgbd mvs scenes11)
