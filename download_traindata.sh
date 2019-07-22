@@ -22,6 +22,12 @@ provided files for your research.
 type Y to start the download.
 EOF
 
+read -s -n 1 answer
+if [ "$answer" != "Y" -a "$answer" != "y" ]; then
+	exit 0
+fi
+echo
+
 datasets=(sun3d rgbd mvs scenes11)
 
 OLD_PWD="$PWD"
