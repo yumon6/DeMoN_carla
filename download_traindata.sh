@@ -23,12 +23,10 @@ type Y to start the download.
 EOF
 
 read -s -n 1 answer
-if [ "$answer" != "Y" -a "$answer" != "y" ]; then
-expect -c "
-set timeout 5
-expect \"y\"
-"
-	exit 0
+if [ "$answer" != "Y" -a "$answer" != "y" ]; 
+exit 0
+else
+then
 fi
 
 echo
