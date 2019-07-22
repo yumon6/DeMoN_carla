@@ -29,20 +29,17 @@ DESTINATION=traindata
 mkdir $DESTINATION
 cd $DESTINATION
 
-if [ ! -e "README_traindata" ]; 
-	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/README_traindata"
-fi
-if [ ! -e "traindata.md5" ]; 
-	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/traindata.md5"
-fi
-
 for ds in ${datasets[@]}; do
-	if [ -e "${ds}_train.h5" ]; 
-		echo "${ds}_train.h5 already exists, skipping ${ds}"
-	else
 		wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/${ds}_train.tgz"
 		tar -xvf "${ds}_train.tgz"
-	fi
 done
+
+	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/README_traindata"
+
+
+	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/traindata.md5"
+
+
+
 
 cd "$OLD_PWD"
