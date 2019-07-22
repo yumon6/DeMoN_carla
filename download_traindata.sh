@@ -22,15 +22,6 @@ provided files for your research.
 type Y to start the download.
 EOF
 
-read -s -n 1 answer
-if [ "$answer" != "Y" -a "$answer" != "y" ]; 
-exit 0
-else
-then
-fi
-
-echo
-
 datasets=(sun3d rgbd mvs scenes11)
 
 OLD_PWD="$PWD"
@@ -38,15 +29,15 @@ DESTINATION=traindata
 mkdir $DESTINATION
 cd $DESTINATION
 
-if [ ! -e "README_traindata" ]; then
+if [ ! -e "README_traindata" ]; 
 	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/README_traindata"
 fi
-if [ ! -e "traindata.md5" ]; then
+if [ ! -e "traindata.md5" ]; 
 	wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/traindata.md5"
 fi
 
 for ds in ${datasets[@]}; do
-	if [ -e "${ds}_train.h5" ]; then
+	if [ -e "${ds}_train.h5" ]; 
 		echo "${ds}_train.h5 already exists, skipping ${ds}"
 	else
 		wget --no-check-certificate "https://lmb.informatik.uni-freiburg.de/data/demon/traindata/${ds}_train.tgz"
