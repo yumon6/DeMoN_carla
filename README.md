@@ -1,5 +1,5 @@
 # DeMoN_datasets
-* 手順
+* 手順  
 pip install tensorflow-gpu==1.4.0  
 pip install pillow  
 pip install matplotlib  
