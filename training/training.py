@@ -91,12 +91,12 @@ def main(argv=None):
     }
 
     # add data sources
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'sun3d_train*.h5')), 0.8)
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'rgbd_*_train.h5')), 0.2)
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_breisach.h5')), 0.3)
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_citywall.h5')), 0.3)
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_achteck_turm.h5')), 0.003)
-    reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'scenes11_train.h5')), 0.2)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'sun3d_train*.h5')), 0.8)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'rgbd_*_train.h5')), 0.2)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_breisach.h5')), 0.3)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_citywall.h5')), 0.3)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'mvs_achteck_turm.h5')), 0.003)
+    #reader_params = datareader.add_sources(reader_params, glob.glob(os.path.join(_data_dir,'scenes11_train.h5')), 0.2)
 
     learning_rate = ease_in_quad(
         global_stepf-_max_iter_dict[trainer.current_evo.name()]/3,
