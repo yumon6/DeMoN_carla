@@ -19,7 +19,7 @@ with h5py.File('carla_dataset.h5','w') as f:
 
     for i in range(10000):
         img = Image.open('./image/rgb' + '{1999}.jpg'.format(i+1))
-        Rt = np.loadtxt('carla_Rt{1999}.txt'.format(i+1))
+        Rt = np.loadtxt('.image/Rt' + '{1999}.txt'.format(i+1))
         depth = np.load('./image/depth' + '{1999}.npy'.format(i+1))
         K = np.eye(3)
         K[0,0] = normalized_intrinsics[0] * img.size[0]
