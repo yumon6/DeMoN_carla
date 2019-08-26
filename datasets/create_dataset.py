@@ -17,10 +17,10 @@ group_name = 'sculpture-0001'
 # write a new dataset with a single group and two views
 with h5py.File('carla_dataset.h5','w') as f:
 
-    for i in range(2):
-        img = Image.open('carla{0}.jpg'.format(i+1))
-        Rt = np.loadtxt('carla_Rt{0}.txt'.format(i+1))
-        depth = np.load('carla_depth{0}.npy'.format(i+1))
+    for i in range(10000):
+        img = Image.open('./image/rgb' + '{1999}.jpg'.format(i+1))
+        Rt = np.loadtxt('carla_Rt{1999}.txt'.format(i+1))
+        depth = np.load('./image/depth' + '{1999}.npy'.format(i+1))
         K = np.eye(3)
         K[0,0] = normalized_intrinsics[0] * img.size[0]
         K[1,1] = normalized_intrinsics[1] * img.size[1]
