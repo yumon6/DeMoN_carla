@@ -346,18 +346,18 @@ def depthmotion_block(image_pair, image2_2, prev_flow2, prev_flowconf2, prev_rot
         depth_from_flow = tf.clip_by_value(depth_from_flow, 0.0, 50.0)    
 
         extra_inputs.append(depth_from_flow)
-
+    #LSTM1
     concat_extra_inputs = tf.stop_gradient(tf.concat(extra_inputs, axis=1 if data_format=='channels_first' else 3))
     conv_extra_inputs = convrelu2(name='conv2_extra_inputs', inputs=concat_extra_inputs, num_outputs=32, kernel_size=3, stride=1, **conv_params)
     conv2_concat = tf.concat((conv2,conv_extra_inputs),axis=1 if data_format=='channels_first' else 3)
     conv2_1 = convrelu2(name='conv2_1', inputs=conv2_concat, num_outputs=64, kernel_size=3, stride=1, **conv_params)
-    
+    #LSTM2
     conv3 = convrelu2(name='conv3', inputs=conv2_1, num_outputs=(96,128), kernel_size=5, stride=2, **conv_params)
     conv3_1 = convrelu2(name='conv3_1', inputs=conv3, num_outputs=128, kernel_size=3, stride=1, **conv_params)
-    
+    #LSTM3
     conv4 = convrelu2(name='conv4', inputs=conv3_1, num_outputs=(192,256), kernel_size=5, stride=2, **conv_params)
     conv4_1 = convrelu2(name='conv4_1', inputs=conv4, num_outputs=256, kernel_size=3, stride=1, **conv_params)
-    
+    #LSTM4
     conv5 = convrelu2(name='conv5', inputs=conv4_1, num_outputs=384, kernel_size=3, stride=2, **conv_params)
     conv5_1 = convrelu2(name='conv5_1', inputs=conv5, num_outputs=384, kernel_size=3, stride=1, **conv_params)
     
@@ -432,7 +432,7 @@ def depthmotion_block(image_pair, image2_2, prev_flow2, prev_flowconf2, prev_rot
             features_direct=conv4_1,
             **conv_params,
         )
-
+    #LSTM5
     with tf.variable_scope('refine3'):
         concat3 = _refine(
             inp=concat4, 
@@ -440,7 +440,7 @@ def depthmotion_block(image_pair, image2_2, prev_flow2, prev_flowconf2, prev_rot
             features_direct=conv3_1,
             **conv_params,
         )
-
+    #LSTM6
     with tf.variable_scope('refine2'):
         concat2 = _refine(
             inp=concat3, 
@@ -448,7 +448,7 @@ def depthmotion_block(image_pair, image2_2, prev_flow2, prev_flowconf2, prev_rot
             features_direct=conv2_1,
             **conv_params,
         )
-
+    #LSTM7
     with tf.variable_scope('predict_depthnormal2'):
         predict_depth2, predict_normal2 = _predict_depthnormal(concat2, predicted_scale=predict_scale, **conv_params)
  
