@@ -161,12 +161,17 @@ def flow_block(image_pair, image2_2=None, intrinsics=None, prev_predictions=None
         conv2_concat = tf.concat((conv2,conv_extra_inputs), axis=1 if data_format=='channels_first' else 3)
         conv2_1 = convrelu2(name='conv2_1', inputs=conv2_concat, num_outputs=64, kernel_size=3, stride=1, **conv_params)
     
+    hidden1, lstm_state1 = basic_conv_lstm_cell_leakyrelu(conv2_1,lstm_state1,64,filter_size=5,scope="cLSTM1",reuse=reuse)
     
-    conv3 = convrelu2(name='conv3', inputs=conv2_1, num_outputs=(96,128), kernel_size=5, stride=2, **conv_params)
+    conv3 = convrelu2(name='conv3', inputs=hidden1, num_outputs=(96,128), kernel_size=5, stride=2, **conv_params)
     conv3_1 = convrelu2(name='conv3_1', inputs=conv3, num_outputs=128, kernel_size=3, stride=1, **conv_params)
+    
+    hidden2, lstm_state2 = basic_conv_lstm_cell_leakyrelu_norm(conv3_1,lstm_state1,32,filter_size=5,scope="cLSTM1",reuse=reuse)
     
     conv4 = convrelu2(name='conv4', inputs=conv3_1, num_outputs=(192,256), kernel_size=5, stride=2, **conv_params)
     conv4_1 = convrelu2(name='conv4_1', inputs=conv4, num_outputs=256, kernel_size=3, stride=1, **conv_params)
+    
+    hidden3, lstm_state3 = basic_conv_lstm_cell_leakyrelu_norm(conv4_1,lstm_state1,16,filter_size=5,scope="cLSTM1",reuse=reuse)
     
     conv5 = convrelu2(name='conv5', inputs=conv4_1, num_outputs=384, kernel_size=5, stride=2, **conv_params)
     conv5_1 = convrelu2(name='conv5_1', inputs=conv5, num_outputs=384, kernel_size=3, stride=1, **conv_params)
@@ -206,7 +211,9 @@ def flow_block(image_pair, image2_2=None, intrinsics=None, prev_predictions=None
             features_direct=conv4_1,
             **conv_params,
         )
-
+    
+    hidden4, lstm_state4= basic_conv_lstm_cell_leakyrelu_norm(concat4+hidden3,lstm_state4,256,filter_size=5,scope="cLSTM5",reuse=reuse)
+        
     with tf.variable_scope('refine3'):
         concat3 = _refine(
             inp=concat4, 
@@ -215,6 +222,8 @@ def flow_block(image_pair, image2_2=None, intrinsics=None, prev_predictions=None
             **conv_params,
         )
 
+    hidden5, lstm_state5= basic_conv_lstm_cell_leakyrelu_norm(concat3+hidden2,lstm_state5,512,filter_size=5,scope="cLSTM5",reuse=reuse)    
+        
     with tf.variable_scope('refine2'):
         concat2 = _refine(
             inp=concat3, 
